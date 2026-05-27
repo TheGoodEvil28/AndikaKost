@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+*:focus-visible {
+  outline: 3px solid rgb(59 130 246);
+  outline-offset: 2px;
+}
+

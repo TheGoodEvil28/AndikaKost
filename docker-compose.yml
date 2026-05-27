@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16
+    container_name: andika_kost_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: andika_kost
+    ports:
+      - "5432:5432"
+    volumes:
+      - andika_kost_pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./AndikaKost-Backend
+    container_name: andika_kost_backend
+    env_file:
+      - ./AndikaKost-Backend/.env
+    environment:
+      # Override to use the db service hostname inside Docker network
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/andika_kost
+      FRONTEND_ORIGIN: http://localhost:5173
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - andika_kost_uploads:/app/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/api/v1/health >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    command: >
+      sh -c "alembic upgrade head
+      && python -m app.db.init_db
+      && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  frontend:
+    build:
+      context: ./AndikaKost-Frontend
+    container_name: andika_kost_frontend
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000
+    ports:
+      - "5173:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  andika_kost_pgdata:
+  andika_kost_uploads:
