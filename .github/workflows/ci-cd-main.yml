@@ -114,18 +114,27 @@ jobs:
       - name: Remote deploy via SSH tunnel
         run: |
           set -euo pipefail
+          APP_DIR='${{ secrets.SERVER_APP_DIR }}'
+          if [ -z "$APP_DIR" ]; then
+            APP_DIR='/opt/andikakost'
+          fi
+
           ssh -o StrictHostKeyChecking=accept-new \
               -i ~/.ssh/id_ed25519 \
               -p 2222 \
-              "${{ secrets.SERVER_USER }}"@127.0.0.1 <<'REMOTE'
-          set -euo pipefail
-          cd "${{ secrets.SERVER_APP_DIR }}"
-          git fetch --all --prune
-          git checkout main
-          git reset --hard origin/main
-          chmod +x scripts/deploy.sh
-          ./scripts/deploy.sh
-          REMOTE
+              "${{ secrets.SERVER_USER }}"@127.0.0.1 "
+                set -euo pipefail
+                if [ ! -d '$APP_DIR' ]; then
+                  echo 'Deploy directory not found. Set SERVER_APP_DIR correctly or create /opt/andikakost.'
+                  exit 1
+                fi
+                cd '$APP_DIR'
+                git fetch --all --prune
+                git checkout main
+                git reset --hard origin/main
+                chmod +x scripts/deploy.sh
+                ./scripts/deploy.sh
+              "
 
       - name: Dump cloudflared logs on failure
         if: failure()
