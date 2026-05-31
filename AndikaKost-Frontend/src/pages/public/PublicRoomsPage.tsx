@@ -39,8 +39,8 @@ export default function PublicRoomsPage() {
 
       <main className="mx-auto grid max-w-7xl gap-6 p-4 md:p-8">
         <Card>
-          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">Public Booking</div>
-          <h1 className="mt-3 text-3xl font-bold text-slate-900">Available Rooms</h1>
+          
+          <h1 className="text-3xl font-bold text-slate-900">Available Rooms</h1>
           <p className="mt-2 text-muted">Choose a room and submit your booking request. We will confirm details and payment with you.</p>
         </Card>
 

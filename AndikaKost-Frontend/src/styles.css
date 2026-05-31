@@ -1,21 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700&display=swap");
 
 :root {
   --brand-primary: #003078;
   --brand-primary-2: #0a4b8f;
   --brand-accent: #e41824;
-  --brand-accent-2: #f0474f;
-  --app-bg: #f5f7fc;
-  --app-fg: #0b1730;
-  --surface-bg: rgba(255, 255, 255, 0.82);
-  --surface-fg: #0b1730;
-  --surface-border: rgba(16, 48, 120, 0.14);
-  --surface-shadow: 0 20px 40px -28px rgba(0, 48, 120, 0.35);
-  --focus-ring: rgba(10, 75, 143, 0.36);
-  --muted-fg: #4a5a79;
+  --app-bg: #f4f7fc;
+  --app-fg: #0f172a;
+  --surface-bg: #ffffff;
+  --surface-fg: #0f172a;
+  --surface-border: #dbe3f0;
+  --surface-shadow: 0 14px 28px -22px rgba(7, 25, 57, 0.45);
+  --focus-ring: rgba(10, 75, 143, 0.35);
+  --muted-fg: #51607a;
 
   --ui-font-base: 16px;
   --ui-line-base: 24px;
@@ -26,14 +25,14 @@
 }
 
 html[data-theme="dark"] {
-  --app-bg: #071127;
-  --app-fg: #e5edf9;
-  --surface-bg: rgba(9, 24, 56, 0.8);
-  --surface-fg: #e5edf9;
-  --surface-border: rgba(132, 167, 232, 0.24);
-  --surface-shadow: 0 24px 42px -28px rgba(0, 0, 0, 0.75);
+  --app-bg: #0a1326;
+  --app-fg: #e2e8f0;
+  --surface-bg: #0f1e37;
+  --surface-fg: #e2e8f0;
+  --surface-border: #24416e;
+  --surface-shadow: 0 16px 30px -20px rgba(0, 0, 0, 0.7);
   --focus-ring: rgba(120, 163, 236, 0.42);
-  --muted-fg: #adbedf;
+  --muted-fg: #a7b6d1;
   color-scheme: dark;
 }
 
@@ -49,12 +48,9 @@ body {
   font-family: "Manrope", "Segoe UI", "Trebuchet MS", sans-serif;
   font-feature-settings: "ss01" on, "cv11" on;
   background-color: var(--app-bg);
-  background-image:
-    radial-gradient(1200px 480px at -5% -20%, rgba(10, 75, 143, 0.22), transparent 55%),
-    radial-gradient(780px 360px at 105% 0%, rgba(228, 24, 36, 0.18), transparent 55%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 38%);
+  background-image: radial-gradient(900px 340px at 0% -15%, rgba(10, 75, 143, 0.14), transparent 58%);
   color: var(--app-fg);
-  transition: background-color 0.25s ease, color 0.25s ease, background-image 0.25s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   min-height: 100vh;
 }
 
@@ -63,25 +59,29 @@ h2,
 h3,
 h4 {
   font-family: "Sora", "Manrope", sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .admin-surface {
-  --ui-font-base: 18px;
-  --ui-line-base: 28px;
-  --ui-font-lg: 22px;
-  --ui-line-lg: 32px;
-  --ui-font-xl: 26px;
-  --ui-line-xl: 36px;
-}
-
-.tenant-surface {
-  --ui-font-base: 17px;
-  --ui-line-base: 26px;
+  --ui-font-base: 16px;
+  --ui-line-base: 24px;
   --ui-font-lg: 20px;
   --ui-line-lg: 30px;
   --ui-font-xl: 24px;
   --ui-line-xl: 34px;
+}
+
+.tenant-surface {
+  --ui-font-base: 16px;
+  --ui-line-base: 24px;
+  --ui-font-lg: 19px;
+  --ui-line-lg: 28px;
+  --ui-font-xl: 22px;
+  --ui-line-xl: 32px;
 }
 
 .theme-surface {
@@ -96,13 +96,19 @@ h4 {
 }
 
 html[data-theme="dark"] .brand-heading {
-  color: #bed6ff;
+  color: #bfd6ff;
 }
 
 .brand-chip {
-  border: 1px solid color-mix(in oklab, var(--brand-primary) 22%, white);
-  background: color-mix(in oklab, var(--brand-primary) 10%, white);
+  border: 1px solid #b8cdee;
+  background: #eaf1fb;
   color: var(--brand-primary);
+}
+
+html[data-theme="dark"] .brand-chip {
+  border-color: #2f4f7f;
+  background: #122847;
+  color: #bfd6ff;
 }
 
 .text-muted {
@@ -113,27 +119,16 @@ html[data-theme="dark"] .brand-heading {
   position: relative;
 }
 
-.app-page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(420px 200px at 10% 88%, rgba(228, 24, 36, 0.08), transparent 60%),
-    radial-gradient(460px 220px at 88% 84%, rgba(0, 48, 120, 0.1), transparent 60%);
-  z-index: -1;
-}
-
 html[data-theme="dark"] .bg-white {
-  background-color: #0b1f49 !important;
+  background-color: #0f1e37 !important;
 }
 
 html[data-theme="dark"] .bg-slate-50 {
-  background-color: #071127 !important;
+  background-color: #0a1326 !important;
 }
 
 html[data-theme="dark"] .bg-slate-100 {
-  background-color: #102a5f !important;
+  background-color: #142a4b !important;
 }
 
 html[data-theme="dark"] .text-slate-900,
@@ -151,7 +146,7 @@ html[data-theme="dark"] .text-slate-400 {
 html[data-theme="dark"] .border-slate-100,
 html[data-theme="dark"] .border-slate-200,
 html[data-theme="dark"] .border-slate-300 {
-  border-color: #2d4f8f !important;
+  border-color: #2f4f7f !important;
 }
 
 *:focus-visible {

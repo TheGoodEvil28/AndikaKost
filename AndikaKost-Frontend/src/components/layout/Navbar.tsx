@@ -11,10 +11,10 @@ export default function Navbar({ title }: { title: string }) {
   const homePath = title === "Admin" ? "/admin/dashboard" : "/tenant/dashboard";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/35 bg-white/72 px-4 py-3 backdrop-blur-lg md:px-6">
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/95 px-4 py-3 md:px-6">
       <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-3">
         <Link to={homePath} className="inline-flex items-center gap-3">
-          <img src={Logo} alt="AndikaKost" className="h-10 w-10 rounded-lg border border-white/50 shadow" />
+          <img src={Logo} alt="AndikaKost" className="h-10 w-10 rounded-lg border border-slate-200" />
           <div>
             <div className="text-ui-lg font-semibold brand-heading">{title} Panel</div>
             {me ? <div className="text-sm text-muted">Signed in as {me.full_name}</div> : null}

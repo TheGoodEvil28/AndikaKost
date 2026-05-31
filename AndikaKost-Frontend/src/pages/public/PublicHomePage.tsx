@@ -20,11 +20,11 @@ export default function PublicHomePage() {
 
       <main className="mx-auto grid max-w-7xl gap-6 p-4 md:grid-cols-12 md:gap-8 md:p-8">
         <Card className="md:col-span-7">
-          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">AndikaKost Living</div>
-          <h1 className="mt-4 text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
+          
+          <h1 className="text-3xl font-bold leading-tight text-slate-900 md:text-4xl">
             Modern living management with a fast booking-to-tenant journey
           </h1>
-          <p className="mt-3 text-ui-base text-muted">
+          <p className="mt-4 text-ui-base text-muted">
             Explore available rooms, submit your request in minutes, and move smoothly into an organized tenant system.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">

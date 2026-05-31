@@ -68,8 +68,8 @@ export default function LoginPage() {
         </div>
 
         <div className="theme-surface rounded-3xl border p-6 md:col-span-7 md:p-8">
-          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">Platform Benefits</div>
-          <h2 className="mt-4 text-3xl font-bold text-slate-900">One sleek workspace for admin and tenant operations</h2>
+          
+          <h2 className="text-3xl font-bold text-slate-900">One sleek workspace for admin and tenant operations</h2>
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <div className="rounded-2xl border border-slate-200 bg-white/70 p-4">
               <h3 className="text-lg font-semibold brand-heading">For Admins</h3>
