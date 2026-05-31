@@ -72,3 +72,7 @@ Configured in `AndikaKost-Backend/.env`:
 ## Project Status & Roadmap
 
 See `docs/PROJECT_STATUS.md`.
+
+## UI Documentation
+
+- UI overhaul (responsive + admin accessibility + sleek public): `docs/UI_OVERHAUL_RESPONSIVE_A11Y.md`
