@@ -10,10 +10,11 @@ export default function TenantLayout() {
     { to: "/tenant/complaints", label: "My Complaints" },
     { to: "/tenant/complaints/new", label: "New Complaint" }
   ];
+
   return (
-    <div className="tenant-surface min-h-screen bg-slate-50">
+    <div className="app-page tenant-surface min-h-screen">
       <Navbar title="Tenant" />
-      <div className="mx-auto flex max-w-7xl flex-col md:flex-row">
+      <div className="mx-auto flex w-full max-w-7xl flex-col md:flex-row">
         <Sidebar items={items} />
         <main className="flex-1 p-4 md:p-6">
           <Outlet />

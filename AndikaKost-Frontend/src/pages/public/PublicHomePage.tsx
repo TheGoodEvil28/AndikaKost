@@ -15,16 +15,19 @@ export default function PublicHomePage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="app-page min-h-screen">
       <PublicHeader />
 
-      <main className="mx-auto grid max-w-7xl gap-6 p-4 md:grid-cols-2 md:items-start md:p-8">
-        <Card className="border-slate-200/80 bg-white/80">
-          <div className="text-ui-xl font-semibold tracking-tight">Live comfortably at AndikaKost</div>
-          <p className="text-slate-700">
-            View available rooms, request a booking, and we’ll help you become a tenant after payment is verified.
+      <main className="mx-auto grid max-w-7xl gap-6 p-4 md:grid-cols-12 md:gap-8 md:p-8">
+        <Card className="md:col-span-7">
+          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">AndikaKost Living</div>
+          <h1 className="mt-4 text-3xl font-bold leading-tight text-slate-900 md:text-5xl">
+            Modern living management with a fast booking-to-tenant journey
+          </h1>
+          <p className="mt-3 text-ui-base text-muted">
+            Explore available rooms, submit your request in minutes, and move smoothly into an organized tenant system.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Link to="/rooms">
               <Button>See available rooms</Button>
             </Link>
@@ -32,22 +35,22 @@ export default function PublicHomePage() {
               <Button variant="secondary">Admin/Tenant login</Button>
             </Link>
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-xl border border-slate-200 bg-white p-4">
-              <div className="text-sm text-slate-600">Total rooms</div>
-              <div className="mt-1 text-3xl font-bold">{data?.total_rooms ?? "-"}</div>
+          <div className="mt-6 grid grid-cols-2 gap-3 md:max-w-md">
+            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-sm text-muted">Total rooms</div>
+              <div className="mt-1 text-3xl font-extrabold text-slate-900">{data?.total_rooms ?? "-"}</div>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-4">
-              <div className="text-sm text-slate-600">Available now</div>
-              <div className="mt-1 text-3xl font-bold">{data?.available_rooms ?? "-"}</div>
+            <div className="rounded-2xl border border-slate-200 bg-white/80 p-4">
+              <div className="text-sm text-muted">Available now</div>
+              <div className="mt-1 text-3xl font-extrabold text-slate-900">{data?.available_rooms ?? "-"}</div>
             </div>
           </div>
         </Card>
 
-        <Card title="Overview" className="border-slate-200/80 bg-white/80">
-          <img src={HeroImg} alt="Kost overview" className="w-full rounded-xl border border-slate-200" />
-          <p className="mt-3 text-sm text-slate-600">
-            Booking requests are reviewed by admin to prevent double-booking and to verify payment details.
+        <Card title="Property Overview" className="md:col-span-5">
+          <img src={HeroImg} alt="Kost overview" className="w-full rounded-2xl border border-slate-200 object-cover" />
+          <p className="mt-4 text-sm text-muted">
+            Every booking request is reviewed by admin to avoid double-booking and keep room occupancy status accurate in real time.
           </p>
         </Card>
       </main>

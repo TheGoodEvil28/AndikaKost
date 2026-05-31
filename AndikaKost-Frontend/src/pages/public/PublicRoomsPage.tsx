@@ -34,12 +34,14 @@ export default function PublicRoomsPage() {
   const list = useMemo(() => rooms.data ?? [], [rooms.data]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+    <div className="app-page min-h-screen">
       <PublicHeader />
 
       <main className="mx-auto grid max-w-7xl gap-6 p-4 md:p-8">
-        <Card title="Available Rooms">
-          <p className="text-slate-700">Pick a room and submit a booking request. We’ll confirm availability and payment.</p>
+        <Card>
+          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">Public Booking</div>
+          <h1 className="mt-3 text-3xl font-bold text-slate-900">Available Rooms</h1>
+          <p className="mt-2 text-muted">Choose a room and submit your booking request. We will confirm details and payment with you.</p>
         </Card>
 
         {rooms.isLoading ? (
@@ -47,27 +49,27 @@ export default function PublicRoomsPage() {
         ) : rooms.error ? (
           <Card title="Error">Failed to load rooms.</Card>
         ) : (
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {list.map((r) => (
               <Card key={r.id} title={r.room_number}>
                 <div className="grid gap-2 text-ui-base">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Price</span>
+                    <span className="text-muted">Price</span>
                     <b>{formatIdr(r.price_idr)}</b>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Type</span>
+                    <span className="text-muted">Type</span>
                     <b>{r.room_type ?? "-"}</b>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Floor</span>
+                    <span className="text-muted">Floor</span>
                     <b>{r.floor ?? "-"}</b>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-600">Status</span>
+                    <span className="text-muted">Status</span>
                     <Badge tone="ok">available</Badge>
                   </div>
-                  <div className="mt-3 flex gap-2">
+                  <div className="mt-4 flex gap-2">
                     <Button
                       onClick={() => {
                         setSelectedRoom(r);
@@ -82,7 +84,7 @@ export default function PublicRoomsPage() {
             ))}
             {list.length === 0 ? (
               <Card title="No rooms available">
-                <div className="text-slate-700">No rooms are available right now. Please check again later.</div>
+                <div className="text-muted">No rooms are available right now. Please check again later.</div>
               </Card>
             ) : null}
           </div>
@@ -99,9 +101,9 @@ export default function PublicRoomsPage() {
           <Input label="Email" type="email" value={form.email} onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))} />
           <Input label="Phone (optional)" value={form.phone} onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))} />
           <label className="block">
-            <div className="mb-1 text-ui-base font-medium">Message (optional)</div>
+            <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">Message (optional)</div>
             <textarea
-              className="min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-ui-base focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200"
+              className="min-h-11 w-full rounded-xl border border-slate-300/80 bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
               rows={4}
               value={form.message}
               onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}

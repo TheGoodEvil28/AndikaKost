@@ -66,9 +66,9 @@ export default function ComplaintDetailPage() {
               <option value="rejected">rejected</option>
             </Select>
             <label className="block">
-              <div className="mb-1 text-ui-base font-medium">Admin response</div>
+              <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">Admin response</div>
               <textarea
-                className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-ui-base"
+                className="w-full rounded-xl border border-slate-300/80 bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 rows={3}
                 value={response}
                 onChange={(e) => setResponse(e.target.value)}

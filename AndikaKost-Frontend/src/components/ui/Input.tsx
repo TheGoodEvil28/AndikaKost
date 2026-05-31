@@ -16,13 +16,15 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
   const helpId = inputId && (hint || error) ? `${inputId}-help` : undefined;
   return (
     <label className="block">
-      {label ? <div className="mb-1 text-ui-base font-medium">{label}</div> : null}
+      {label ? <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">{label}</div> : null}
       <input
         id={inputId}
         ref={ref}
         className={clsx(
-          "min-h-11 w-full rounded-xl border bg-white px-3 py-2 text-ui-base focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200",
-          error ? "border-rose-400" : "border-slate-300",
+          "min-h-11 w-full rounded-xl border bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900 placeholder:text-slate-400",
+          "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]",
+          "transition",
+          error ? "border-rose-400" : "border-slate-300/80",
           className
         )}
         aria-invalid={!!error}
@@ -30,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
         {...props}
       />
       {helpId ? (
-        <div id={helpId} className={clsx("mt-1 text-sm", error ? "text-rose-700" : "text-slate-600")}>
+        <div id={helpId} className={clsx("mt-1.5 text-sm", error ? "text-rose-700" : "text-muted")}>
           {error ?? hint}
         </div>
       ) : null}

@@ -1,13 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Sora:wght@600;700&display=swap");
 
 :root {
-  --app-bg: #f8fafc;
-  --app-fg: #0f172a;
-  --surface-bg: rgba(255, 255, 255, 0.9);
-  --surface-fg: #0f172a;
-  --surface-border: rgba(148, 163, 184, 0.45);
+  --brand-primary: #003078;
+  --brand-primary-2: #0a4b8f;
+  --brand-accent: #e41824;
+  --brand-accent-2: #f0474f;
+  --app-bg: #f5f7fc;
+  --app-fg: #0b1730;
+  --surface-bg: rgba(255, 255, 255, 0.82);
+  --surface-fg: #0b1730;
+  --surface-border: rgba(16, 48, 120, 0.14);
+  --surface-shadow: 0 20px 40px -28px rgba(0, 48, 120, 0.35);
+  --focus-ring: rgba(10, 75, 143, 0.36);
+  --muted-fg: #4a5a79;
 
   --ui-font-base: 16px;
   --ui-line-base: 24px;
@@ -18,11 +26,14 @@
 }
 
 html[data-theme="dark"] {
-  --app-bg: #020617;
-  --app-fg: #e2e8f0;
-  --surface-bg: rgba(15, 23, 42, 0.92);
-  --surface-fg: #e2e8f0;
-  --surface-border: rgba(148, 163, 184, 0.45);
+  --app-bg: #071127;
+  --app-fg: #e5edf9;
+  --surface-bg: rgba(9, 24, 56, 0.8);
+  --surface-fg: #e5edf9;
+  --surface-border: rgba(132, 167, 232, 0.24);
+  --surface-shadow: 0 24px 42px -28px rgba(0, 0, 0, 0.75);
+  --focus-ring: rgba(120, 163, 236, 0.42);
+  --muted-fg: #adbedf;
   color-scheme: dark;
 }
 
@@ -35,10 +46,24 @@ html {
 }
 
 body {
+  font-family: "Manrope", "Segoe UI", "Trebuchet MS", sans-serif;
   font-feature-settings: "ss01" on, "cv11" on;
   background-color: var(--app-bg);
+  background-image:
+    radial-gradient(1200px 480px at -5% -20%, rgba(10, 75, 143, 0.22), transparent 55%),
+    radial-gradient(780px 360px at 105% 0%, rgba(228, 24, 36, 0.18), transparent 55%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0) 38%);
   color: var(--app-fg);
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, background-image 0.25s ease;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Sora", "Manrope", sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .admin-surface {
@@ -63,18 +88,52 @@ body {
   background-color: var(--surface-bg);
   color: var(--surface-fg);
   border-color: var(--surface-border);
+  box-shadow: var(--surface-shadow);
+}
+
+.brand-heading {
+  color: var(--brand-primary);
+}
+
+html[data-theme="dark"] .brand-heading {
+  color: #bed6ff;
+}
+
+.brand-chip {
+  border: 1px solid color-mix(in oklab, var(--brand-primary) 22%, white);
+  background: color-mix(in oklab, var(--brand-primary) 10%, white);
+  color: var(--brand-primary);
+}
+
+.text-muted {
+  color: var(--muted-fg);
+}
+
+.app-page {
+  position: relative;
+}
+
+.app-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(420px 200px at 10% 88%, rgba(228, 24, 36, 0.08), transparent 60%),
+    radial-gradient(460px 220px at 88% 84%, rgba(0, 48, 120, 0.1), transparent 60%);
+  z-index: -1;
 }
 
 html[data-theme="dark"] .bg-white {
-  background-color: #0f172a !important;
+  background-color: #0b1f49 !important;
 }
 
 html[data-theme="dark"] .bg-slate-50 {
-  background-color: #020617 !important;
+  background-color: #071127 !important;
 }
 
 html[data-theme="dark"] .bg-slate-100 {
-  background-color: #1e293b !important;
+  background-color: #102a5f !important;
 }
 
 html[data-theme="dark"] .text-slate-900,
@@ -86,16 +145,16 @@ html[data-theme="dark"] .text-slate-500 {
 }
 
 html[data-theme="dark"] .text-slate-400 {
-  color: #94a3b8 !important;
+  color: #9fb0d4 !important;
 }
 
 html[data-theme="dark"] .border-slate-100,
 html[data-theme="dark"] .border-slate-200,
 html[data-theme="dark"] .border-slate-300 {
-  border-color: #334155 !important;
+  border-color: #2d4f8f !important;
 }
 
 *:focus-visible {
-  outline: 3px solid rgb(59 130 246);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }

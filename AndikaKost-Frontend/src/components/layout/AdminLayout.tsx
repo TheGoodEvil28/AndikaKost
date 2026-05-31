@@ -11,10 +11,11 @@ export default function AdminLayout() {
     { to: "/admin/payments", label: "Payments" },
     { to: "/admin/complaints", label: "Complaints" }
   ];
+
   return (
-    <div className="admin-surface min-h-screen bg-slate-50">
+    <div className="app-page admin-surface min-h-screen">
       <Navbar title="Admin" />
-      <div className="mx-auto flex max-w-7xl flex-col md:flex-row">
+      <div className="mx-auto flex w-full max-w-7xl flex-col md:flex-row">
         <Sidebar items={items} />
         <main className="flex-1 p-4 md:p-6">
           <Outlet />

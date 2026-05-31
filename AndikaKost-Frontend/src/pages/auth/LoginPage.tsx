@@ -43,38 +43,51 @@ export default function LoginPage() {
   }, [token, currentUser, navigate]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="mx-auto grid max-w-5xl gap-6 p-6 md:grid-cols-2 md:items-center">
-        <div className="rounded-2xl bg-white p-6 shadow-sm border border-slate-200">
+    <div className="app-page min-h-screen">
+      <div className="mx-auto grid max-w-6xl gap-6 p-4 md:grid-cols-12 md:items-center md:p-8">
+        <div className="theme-surface rounded-3xl border p-6 md:col-span-5 md:p-7">
           <div className="flex items-center gap-3">
-            <img src={Logo} alt="AndikaKost logo" className="h-12 w-12 rounded-xl object-cover" />
-            <h1 className="text-2xl font-bold">AndikaKost</h1>
+            <img src={Logo} alt="AndikaKost logo" className="h-12 w-12 rounded-xl border border-white/40 shadow" />
+            <h1 className="text-2xl font-bold brand-heading">AndikaKost</h1>
           </div>
-          <p className="mt-2 text-slate-600 text-ui-base">
-            Simple, accessible kost management for admins and tenants.
-          </p>
+          <p className="mt-2 text-ui-base text-muted">Login to manage rooms, payments, and complaints with a clean centralized workflow.</p>
           <form className="mt-6 grid gap-3" onSubmit={handleSubmit(onSubmit)}>
             <Input label="Email" type="email" {...register("email")} error={formState.errors.email?.message} autoComplete="username" />
-            <Input label="Password" type="password" {...register("password")} error={formState.errors.password?.message} autoComplete="current-password" />
+            <Input
+              label="Password"
+              type="password"
+              {...register("password")}
+              error={formState.errors.password?.message}
+              autoComplete="current-password"
+            />
             <Button type="submit">Login</Button>
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted">
               Admin seed credentials are configured in backend <code>.env</code>.
             </div>
           </form>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-6">
-          <h2 className="text-ui-lg font-semibold">For Admins</h2>
-          <ul className="mt-2 list-disc pl-5 text-slate-700">
-            <li>Clear dashboard summary</li>
-            <li>Room and tenant management</li>
-            <li>Verify payments and respond to complaints</li>
-          </ul>
-          <h2 className="mt-6 text-ui-lg font-semibold">For Tenants</h2>
-          <ul className="mt-2 list-disc pl-5 text-slate-700">
-            <li>See bills and payment status</li>
-            <li>Upload payment proof</li>
-            <li>Submit complaints with optional photos</li>
-          </ul>
+
+        <div className="theme-surface rounded-3xl border p-6 md:col-span-7 md:p-8">
+          <div className="inline-flex rounded-full brand-chip px-3 py-1 text-sm font-semibold">Platform Benefits</div>
+          <h2 className="mt-4 text-3xl font-bold text-slate-900">One sleek workspace for admin and tenant operations</h2>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white/70 p-4">
+              <h3 className="text-lg font-semibold brand-heading">For Admins</h3>
+              <ul className="mt-2 list-disc pl-5 text-muted">
+                <li>Live occupancy and booking visibility</li>
+                <li>Structured payment verification flow</li>
+                <li>Complaint handling with status tracking</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white/70 p-4">
+              <h3 className="text-lg font-semibold brand-heading">For Tenants</h3>
+              <ul className="mt-2 list-disc pl-5 text-muted">
+                <li>Transparent bill and payment status</li>
+                <li>Fast upload of payment proof</li>
+                <li>Simple complaint submission process</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -26,21 +26,21 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#05122e]/55 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-          <h2 className="text-ui-lg font-semibold">{title}</h2>
+      <div className="theme-surface w-full max-w-2xl rounded-3xl border shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 md:px-5">
+          <h2 className="text-ui-lg font-semibold brand-heading">{title}</h2>
           <Button variant="secondary" onClick={onClose} aria-label="Close dialog">
             Close
           </Button>
         </div>
-        <div className="p-4">{children}</div>
+        <div className="p-4 md:p-5">{children}</div>
       </div>
     </div>
   );

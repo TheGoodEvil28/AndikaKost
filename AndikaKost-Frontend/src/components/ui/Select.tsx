@@ -15,13 +15,15 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
   const selectId = id ?? props.name ?? undefined;
   return (
     <label className="block">
-      {label ? <div className="mb-1 text-ui-base font-medium">{label}</div> : null}
+      {label ? <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">{label}</div> : null}
       <select
         id={selectId}
         ref={ref}
         className={clsx(
-          "w-full rounded-lg border bg-white px-3 py-2 text-ui-base",
-          error ? "border-rose-400" : "border-slate-300",
+          "min-h-11 w-full rounded-xl border bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900",
+          "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]",
+          "transition",
+          error ? "border-rose-400" : "border-slate-300/80",
           className
         )}
         aria-invalid={!!error}
@@ -31,7 +33,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
         {children}
       </select>
       {hint || error ? (
-        <div id={`${selectId}-help`} className={clsx("mt-1 text-sm", error ? "text-rose-700" : "text-slate-600")}>
+        <div id={`${selectId}-help`} className={clsx("mt-1.5 text-sm", error ? "text-rose-700" : "text-muted")}>
           {error ?? hint}
         </div>
       ) : null}

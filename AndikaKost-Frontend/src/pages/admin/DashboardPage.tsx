@@ -40,27 +40,23 @@ export default function AdminDashboardPage() {
   return (
     <div className="grid gap-4">
       <Card title="Operational Summary">
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {items.map((i) => (
-            <div key={i.label} className="rounded-xl border border-slate-200 p-4">
-              <div className="text-sm text-slate-600">{i.label}</div>
-              <div className="mt-1 text-3xl font-bold">{i.value}</div>
+            <div key={i.label} className="rounded-2xl border border-slate-200 bg-white/75 p-4">
+              <div className="text-sm text-muted">{i.label}</div>
+              <div className="mt-1 text-3xl font-extrabold text-slate-900">{i.value}</div>
             </div>
           ))}
         </div>
       </Card>
       <Card title="Overview">
-        <img
-          src={AdminDashImg}
-          alt="Admin dashboard illustration"
-          className="w-full rounded-xl border border-slate-200"
-        />
+        <img src={AdminDashImg} alt="Admin dashboard illustration" className="w-full rounded-2xl border border-slate-200" />
       </Card>
       <Card title="Admin Tips">
-        <ul className="list-disc pl-5 text-slate-700">
-          <li>Use large room numbers and consistent naming (e.g. A-101).</li>
-          <li>Create tenant accounts before assigning rooms and bills.</li>
-          <li>Ask tenants to upload clear payment proof screenshots.</li>
+        <ul className="list-disc pl-5 text-muted">
+          <li>Keep room numbering consistent (for example A-101, A-102).</li>
+          <li>Review booking requests daily to prevent stale availability.</li>
+          <li>Use payment notes clearly when rejecting proof uploads.</li>
         </ul>
       </Card>
     </div>
