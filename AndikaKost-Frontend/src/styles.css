@@ -8,6 +8,13 @@
   --surface-bg: rgba(255, 255, 255, 0.9);
   --surface-fg: #0f172a;
   --surface-border: rgba(148, 163, 184, 0.45);
+
+  --ui-font-base: 16px;
+  --ui-line-base: 24px;
+  --ui-font-lg: 18px;
+  --ui-line-lg: 28px;
+  --ui-font-xl: 20px;
+  --ui-line-xl: 30px;
 }
 
 html[data-theme="dark"] {
@@ -32,6 +39,24 @@ body {
   background-color: var(--app-bg);
   color: var(--app-fg);
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.admin-surface {
+  --ui-font-base: 18px;
+  --ui-line-base: 28px;
+  --ui-font-lg: 22px;
+  --ui-line-lg: 32px;
+  --ui-font-xl: 26px;
+  --ui-line-xl: 36px;
+}
+
+.tenant-surface {
+  --ui-font-base: 17px;
+  --ui-line-base: 26px;
+  --ui-font-lg: 20px;
+  --ui-line-lg: 30px;
+  --ui-font-xl: 24px;
+  --ui-line-xl: 34px;
 }
 
 .theme-surface {

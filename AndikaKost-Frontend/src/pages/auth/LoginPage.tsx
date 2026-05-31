@@ -30,7 +30,7 @@ export default function LoginPage() {
       const user = await me();
       setMe(user);
       navigate(user.role === "admin" ? "/admin/dashboard" : "/tenant/dashboard", { replace: true });
-    } catch (err: any) {
+    } catch {
       setToken(null);
       setMe(null);
       setError("email", { message: "Invalid email or password" });

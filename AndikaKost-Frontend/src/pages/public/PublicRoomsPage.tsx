@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Card from "../../components/ui/Card";
 import Button from "../../components/ui/Button";
@@ -9,6 +8,7 @@ import Badge from "../../components/ui/Badge";
 import { api } from "../../api/client";
 import type { Room } from "../../types";
 import { formatIdr } from "../../utils/format";
+import PublicHeader from "../../components/layout/PublicHeader";
 
 type BookingPayload = { room_id: number; full_name: string; email: string; phone?: string; message?: string };
 
@@ -34,21 +34,10 @@ export default function PublicRoomsPage() {
   const list = useMemo(() => rooms.data ?? [], [rooms.data]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link to="/" className="text-ui-lg font-semibold">
-            AndikaKost
-          </Link>
-          <div className="flex gap-2">
-            <Link to="/login">
-              <Button variant="secondary">Login</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <PublicHeader />
 
-      <main className="mx-auto grid max-w-6xl gap-4 p-4">
+      <main className="mx-auto grid max-w-7xl gap-6 p-4 md:p-8">
         <Card title="Available Rooms">
           <p className="text-slate-700">Pick a room and submit a booking request. We’ll confirm availability and payment.</p>
         </Card>
@@ -112,7 +101,7 @@ export default function PublicRoomsPage() {
           <label className="block">
             <div className="mb-1 text-ui-base font-medium">Message (optional)</div>
             <textarea
-              className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-ui-base"
+              className="min-h-11 w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-ui-base focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-200"
               rows={4}
               value={form.message}
               onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
@@ -139,4 +128,3 @@ export default function PublicRoomsPage() {
     </div>
   );
 }
-

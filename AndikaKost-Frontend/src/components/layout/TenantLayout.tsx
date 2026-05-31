@@ -11,15 +11,14 @@ export default function TenantLayout() {
     { to: "/tenant/complaints/new", label: "New Complaint" }
   ];
   return (
-    <div className="min-h-screen">
+    <div className="tenant-surface min-h-screen bg-slate-50">
       <Navbar title="Tenant" />
-      <div className="mx-auto flex max-w-6xl flex-col md:flex-row">
+      <div className="mx-auto flex max-w-7xl flex-col md:flex-row">
         <Sidebar items={items} />
-        <main className="flex-1 p-4">
+        <main className="flex-1 p-4 md:p-6">
           <Outlet />
         </main>
       </div>
     </div>
   );
 }
-
