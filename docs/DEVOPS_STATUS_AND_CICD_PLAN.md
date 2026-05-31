@@ -1,95 +1,75 @@
-# AndikaKost — Development + Repo Access + CI/CD Plan
+# AndikaKost — Development + DevOps Status
 
 Last updated: **May 31, 2026 (UTC)**
 
 ## 1) Current Development Snapshot
 
 - Branch: `main`
-- Latest commit on `main`: `4e7f455` — `fix(compose): wait for healthy postgres before backend startup`
-- Previous base commit: `ecac44d` — `feat: initial PoC (admin, tenant, public booking)`
-- Docker Compose startup race has been fixed:
-  - Postgres now has a healthcheck.
-  - Backend now waits for healthy DB before running migrations/startup.
+- Docker Compose startup race issue has been fixed (DB healthcheck + backend wait-for-healthy).
+- Visible frontend validation change added: persistent light/dark mode toggle.
 
-## 2) Repository Access Status (Verified From Server)
+## 2) Repository & Server Access Status
 
-### Verified OK
+### Verified Working
 
-- Remote configured:
-  - `origin https://github.com/TheGoodEvil28/AndikaKost.git`
-- Read operations:
-  - `git fetch origin` works.
-  - `git pull --ff-only --dry-run` works.
-- Write operations:
-  - `git push origin main` works (verified by successful push of commit `4e7f455`).
+- Local repo is connected to remote `origin`.
+- `git fetch` / `git pull` / `git push` to `main` work.
+- Server-side deployment path is reachable through Cloudflare Access SSH hostname.
 
-### Not Yet Verified
+### Current CI/CD Status
 
-- Pull Request operations directly from server CLI are **not configured yet**.
-- `gh` command is not installed in this environment, so PR create/list/merge via CLI is not available yet.
+- GitHub Actions workflow exists at `.github/workflows/ci-cd-main.yml`.
+- Deploy script exists at `scripts/deploy.sh`.
+- Pipeline flow:
+  1. CI validates backend/frontend build.
+  2. Deploy job starts `cloudflared access tcp` forwarder on runner (`127.0.0.1:2222`).
+  3. Runner SSHes to server via forwarded tunnel.
+  4. Server deploy script pulls latest `main` and runs `docker compose up -d --build`.
+- Latest deployment test status: **successful**.
 
-## 3) Target State
+## 3) Known Gaps / Issues
 
-Goal: **any push to GitHub (especially `main`) should automatically reflect on server** with safe deployment flow.
+- Local-side errors are still reported by project owner (details pending formal log).
+- `gh` CLI-based PR operations from this environment are not set up.
 
-## 4) Plan: Mirror + CI/CD
+## 4) Target State
 
-## Phase A — Prepare Server Mirror
+- Every push to `main` auto-deploys safely to server.
+- Public app available through Cloudflare Tunnel using project domain.
 
-1. Create a deploy directory on server, e.g. `/opt/andikakost`.
-2. Create SSH deploy key (read-only is enough for pull/deploy).
-3. Add deploy key to GitHub repo (`Settings > Deploy keys`).
-4. Clone repository on server:
-   - normal clone (recommended for deploy): `git clone git@github.com:TheGoodEvil28/AndikaKost.git /opt/andikakost`
-   - optional true mirror clone (bare): `git clone --mirror ...` if you need full ref mirror for backup.
-5. Create deploy script (example behavior):
-   - `git fetch --all --prune`
-   - `git checkout main`
-   - `git reset --hard origin/main`
-   - `docker compose up -d --build`
-   - health checks + rollback signal on failure.
+## 5) Next Phase: Publish to Cloudflare Tunnel
 
-## Phase B — GitHub Actions CI/CD (Recommended)
+Planned public hostname:
+- `andika-kost.andikanugra.my.id`
 
-1. Add workflow trigger on push to `main`.
-2. CI job:
-   - checkout code
-   - run tests/lint/build (backend + frontend)
-3. Deploy job (only if CI passes):
-   - SSH to server
-   - run deploy script in `/opt/andikakost`
-4. Protect `main` with required checks to avoid broken deploys.
+Recommended routing:
+1. Frontend route:
+- Hostname: `andika-kost.andikanugra.my.id`
+- Service: `http://localhost:5173`
+2. API route (recommended separate hostname):
+- Hostname: `api-andika-kost.andikanugra.my.id` (or `api.andikanugra.my.id`)
+- Service: `http://localhost:8000`
 
-## Phase C — PR Workflow (Recommended)
+Important notes:
+- DNS names are case-insensitive, but use lowercase format operationally.
+- If frontend calls backend directly, set `VITE_API_BASE_URL` to public API hostname.
+- Update backend `FRONTEND_ORIGIN` to match published frontend URL.
 
-1. Use feature branches for development.
-2. Require PR review before merge to `main`.
-3. Auto-deploy only from `main` after merge.
+## 6) Definition of Done (Current + Next)
 
-## 5) Minimal Secrets/Config Needed
+CI/CD DoD (already achieved):
+- Push to `main` triggers workflow.
+- CI passes.
+- Deploy step updates server and healthcheck passes.
 
-In GitHub Actions Secrets:
+Publishing DoD (next):
+- Frontend reachable at `https://andika-kost.andikanugra.my.id`.
+- API reachable on chosen API hostname.
+- Frontend can call API successfully from browser (no CORS/mixed-content errors).
 
-- `SERVER_HOST`
-- `SERVER_USER`
-- `SERVER_SSH_KEY` (private key for deploy user)
-- `SERVER_PORT` (optional, default 22)
-- Optional: `ENV_FILE_CONTENT` or environment-specific secrets for runtime.
+## 7) Immediate Action Items
 
-On server:
-
-- Docker + Docker Compose installed
-- `.env` files present for backend/frontend runtime
-- deploy user with permission to run Docker commands
-
-## 6) Definition of Done for Next Step
-
-- Push a test commit to `main` from any machine.
-- GitHub Actions pipeline runs automatically.
-- Server updates to latest commit automatically.
-- Health endpoint `http://<server>:8000/api/v1/health` returns success after deploy.
-- Frontend serves latest build at `http://<server>:5173` (or configured domain).
-
-## 7) Recommended Immediate Next Action
-
-Implement `Phase B` first (GitHub Actions deploy over SSH), then add optional mirror hardening if needed.
+1. Document exact local-side error messages in a dedicated issue log.
+2. Configure public Cloudflare Tunnel hostname(s) for app + API.
+3. Validate production env variables for frontend/backend after hostname publish.
+4. Run end-to-end smoke test (login, dashboard, billing upload, complaints flow).
