@@ -26,7 +26,7 @@ services:
     environment:
       # Override to use the db service hostname inside Docker network
       DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/andika_kost
-      FRONTEND_ORIGIN: http://localhost:5173
+      FRONTEND_ORIGINS: http://localhost:5173,https://andika-kost.andikanugra.my.id
       UPLOAD_DIR: /app/uploads
     volumes:
       - andika_kost_uploads:/app/uploads
@@ -50,7 +50,7 @@ services:
       context: ./AndikaKost-Frontend
     container_name: andika_kost_frontend
     environment:
-      VITE_API_BASE_URL: http://localhost:8000
+      VITE_API_BASE_URL: https://andika-kost-api.andikanugra.my.id
     ports:
       - "5173:5173"
     depends_on:
