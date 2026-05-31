@@ -69,7 +69,7 @@ export default function BookingDetailPage() {
               <option value="converted">converted</option>
             </Select>
             <div className="mt-2 text-sm text-slate-600">
-              Suggested flow: <b>submitted → contacted → approved</b>. After payment verification, create a Tenant account and then mark as <b>converted</b>.
+              Suggested flow: <b>submitted → contacted → approved</b>. Approving now auto-creates/activates the tenant profile and sets the room to <b>occupied</b>. Use <b>converted</b> only if you want that explicit final status label.
             </div>
           </div>
         </Card>

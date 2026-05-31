@@ -66,7 +66,8 @@ Configured in `AndikaKost-Backend/.env`:
 ## Notes
 
 - Payment proof and complaint photos are stored locally in `AndikaKost-Backend/uploads/` and served at `/uploads/...`.
-- Tenant accounts are created by Admin via **Admin → Tenants → Add tenant**.
+- Tenant accounts can be created by Admin via **Admin → Tenants → Add tenant**.
+- Booking requests approved from **Admin → Bookings** are auto-converted into tenant accounts and the selected room is set to `occupied`.
 - Booking requests are created from the public rooms page and can be reviewed by Admin via **Admin → Bookings**.
 
 ## Project Status & Roadmap

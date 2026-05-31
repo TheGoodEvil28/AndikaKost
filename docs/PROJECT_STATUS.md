@@ -127,7 +127,7 @@ Target fitur:
 
 ## 6) Batasan Saat Ini (Known Gaps)
 
-- Booking request belum otomatis “convert” jadi tenant account (masih manual via Admin → Tenants).
+- Booking request yang di-approve sekarang otomatis convert menjadi tenant account dan room langsung berubah ke status `occupied`.
 - Tidak ada integrasi WhatsApp/email notification (masih PoC).
 - Tidak ada payment gateway; verifikasi manual via upload proof (sesuai PoC).
 - Tidak ada multi-property (out of scope PoC).
