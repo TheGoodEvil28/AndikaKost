@@ -125,3 +125,29 @@ Why next:
 Why next:
 
 - Improves operational trust and debugging traceability.
+
+### D. Upload security constraints (size/type/auth/path/rate-limit)
+
+Implemented on: `2026-06-01`
+
+- Upload validation tightened:
+  - maximum file size set to `1 MB`,
+  - allowed MIME types restricted to `image/jpeg`, `image/png`, and `application/pdf`.
+- Filename/path hardening:
+  - backend ignores raw user filename,
+  - safe randomized filename is generated server-side,
+  - write-path guard prevents escaping upload directory.
+- Auth remains required on upload routes via tenant JWT dependency.
+- IP upload throttling added:
+  - max `2` upload requests per `60` seconds per IP,
+  - overflow requests are blocked with `HTTP 429` + error code `RATE_LIMITED`.
+
+Main files:
+
+- `AndikaKost-Backend/app/utils/file_upload.py`
+- `AndikaKost-Backend/app/core/rate_limit.py`
+- `AndikaKost-Backend/app/api/v1/payments.py`
+- `AndikaKost-Backend/app/api/v1/complaints.py`
+- `AndikaKost-Backend/app/core/config.py`
+- `AndikaKost-Backend/.env.example`
+- `README.md`

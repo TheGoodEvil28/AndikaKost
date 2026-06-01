@@ -21,7 +21,9 @@ class Settings(BaseSettings):
     database_url: str
 
     upload_dir: str = "uploads"
-    max_upload_mb: int = 10
+    max_upload_mb: int = 1
+    upload_rate_limit_per_minute: int = 2
+    upload_rate_limit_window_seconds: int = 60
 
     @property
     def frontend_origin_list(self) -> list[str]:

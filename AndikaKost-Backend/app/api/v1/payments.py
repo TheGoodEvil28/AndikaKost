@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File, Request
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db, require_admin, get_current_user, require_tenant
+from app.core.rate_limit import enforce_upload_rate_limit
 from app.schemas.payment import PaymentCreate, PaymentUpdate, PaymentOut
 from app.services.payment_service import PaymentService
 
@@ -41,10 +42,12 @@ def update_bill(payment_id: int, payload: PaymentUpdate, db: Session = Depends(g
 @router.post("/{payment_id}/upload-proof")
 def upload_proof(
     payment_id: int,
+    request: Request,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     tenant_user=Depends(require_tenant),
 ):
+    enforce_upload_rate_limit(request)
     payment = PaymentService(db).upload_proof(payment_id=payment_id, user=tenant_user, file=file)
     return {"data": PaymentOut.model_validate(payment), "message": "Success"}
 

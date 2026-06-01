@@ -84,6 +84,15 @@ Configured in `AndikaKost-Backend/.env`:
 
 ## Notes
 
+### Upload Security Constraints
+
+- Max file size: `1 MB` per file (`MAX_UPLOAD_MB=1`).
+- Allowed MIME types: `image/jpeg`, `image/png`, `application/pdf`.
+- Auth required: upload endpoints are tenant-authenticated (`require_tenant`).
+- Path safety: server ignores user filename and generates random safe filenames.
+- Upload rate limit: `2` upload requests per `60` seconds per IP (`UPLOAD_RATE_LIMIT_PER_MINUTE=2`).
+- Over limit: request is blocked with HTTP `429` (`RATE_LIMITED`).
+
 - Payment proof and complaint photos are stored locally in `AndikaKost-Backend/uploads/` and served at `/uploads/...`.
 - Tenant accounts can be created by Admin via **Admin → Tenants → Add tenant**.
 - Booking requests approved from **Admin → Bookings** are auto-converted into tenant accounts and the selected room is set to `occupied`.

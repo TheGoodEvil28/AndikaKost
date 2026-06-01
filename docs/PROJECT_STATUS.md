@@ -152,3 +152,14 @@ Kalau mau lanjut setelah PoC:
 Detailed reference:
 
 - `docs/RECENT_CHANGES_AND_NEXT_STEPS.md`
+
+## 9) Recent Security Hardening Update (1 June 2026)
+
+Upload endpoints sekarang dibatasi untuk mencegah VPS storage bloat dan abuse:
+
+- Max upload size: `1 MB` per file.
+- Allowed MIME types only: `image/jpeg`, `image/png`, `application/pdf`.
+- Auth: upload flow tetap harus user login tenant (JWT + `require_tenant`).
+- Path safety: backend tidak lagi memakai nama file dari user; nama file dibuat acak di server.
+- Rate limit upload: maksimal `2` request upload per `60` detik per IP.
+- Saat limit terlewati: request di-block (`HTTP 429`, code `RATE_LIMITED`).

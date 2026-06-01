@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Depends, UploadFile, File, Form
+from fastapi import APIRouter, Depends, UploadFile, File, Form, Request
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db, require_admin, require_tenant, get_current_user
+from app.core.rate_limit import enforce_upload_rate_limit
 from app.schemas.complaint import ComplaintStatusUpdate, ComplaintResponseCreate, ComplaintOut
 from app.services.complaint_service import ComplaintService
 
@@ -23,6 +24,7 @@ def complaint_detail(complaint_id: int, db: Session = Depends(get_db), user=Depe
 
 @router.post("")
 def submit_complaint(
+    request: Request,
     category: str = Form(...),
     description: str = Form(...),
     priority: str = Form("normal"),
@@ -30,6 +32,9 @@ def submit_complaint(
     db: Session = Depends(get_db),
     tenant_user=Depends(require_tenant),
 ):
+    if photo is not None:
+        enforce_upload_rate_limit(request)
+
     complaint = ComplaintService(db).create(user=tenant_user, category=category, description=description, priority=priority, photo=photo)
     return {"data": ComplaintOut.model_validate(complaint), "message": "Success"}
 
