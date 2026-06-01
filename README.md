@@ -15,11 +15,30 @@ Kost Tenant & Housing Management System PoC (Admin + Tenant) based on the provid
 
 ## Local Setup
 
-### 1) Start PostgreSQL
+### 1) Start Docker Compose stack
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
+
+### Auto-restart after power outage/reboot
+
+This repository now uses `restart: unless-stopped` for `db`, `backend`, and `frontend` in `docker-compose.yml`.
+
+One-time host setup (Linux server):
+
+```bash
+sudo systemctl enable --now docker
+```
+
+Verification:
+
+```bash
+docker compose ps
+docker inspect -f "{{.Name}} => {{.HostConfig.RestartPolicy.Name}}" andika_kost_db andika_kost_backend andika_kost_frontend
+```
+
+If Docker service starts on boot, containers will come back automatically after outage/reboot.
 
 ### 2) Backend
 

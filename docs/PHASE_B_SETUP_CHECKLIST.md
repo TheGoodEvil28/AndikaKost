@@ -34,7 +34,9 @@ cp .env.example .env
 ```
 
 3. `docker`, `docker compose`, and `curl` installed.
-4. Deploy user can run Docker.
+4. Docker is enabled on boot: `sudo systemctl enable --now docker`
+5. Compose services use `restart: unless-stopped` (already configured in this repo) so stack auto-recovers after power outage/reboot.
+6. Deploy user can run Docker.
 
 ## 4) GitHub Secrets (Required)
 

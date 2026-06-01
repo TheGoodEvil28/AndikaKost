@@ -141,3 +141,14 @@ Kalau mau lanjut setelah PoC:
 3) Implement “push invoice to WhatsApp” tahap 1: generate message template + satu tombol copy.
 4) Baru setelah itu integrasi WhatsApp API dan reminder terjadwal.
 
+
+## 8) Recent Implementation Update (31 May 2026)
+
+- Booking approval now auto-converts booking into active tenant + room status `occupied`.
+- Frontend received two UI passes:
+  - logo-inspired modernization,
+  - cleanup pass to fix button contrast/active-state visibility and simplify layout.
+
+Detailed reference:
+
+- `docs/RECENT_CHANGES_AND_NEXT_STEPS.md`
