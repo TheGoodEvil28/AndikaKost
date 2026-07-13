@@ -16,15 +16,16 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
   const helpId = inputId && (hint || error) ? `${inputId}-help` : undefined;
   return (
     <label className="block">
-      {label ? <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">{label}</div> : null}
+      {label ? <span className="mb-1.5 block text-ui-base font-bold text-[var(--surface-fg)]">{label}</span> : null}
       <input
         id={inputId}
         ref={ref}
         className={clsx(
-          "min-h-11 w-full rounded-xl border bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900 placeholder:text-slate-400",
-          "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]",
-          "transition",
-          error ? "border-rose-400" : "border-slate-300/80",
+          "control-surface min-h-11 w-full rounded-xl border px-3.5 py-2.5 text-ui-base placeholder:text-[var(--muted-fg)]",
+          "file:mr-3 file:rounded-lg file:border-0 file:bg-[var(--brand-soft)] file:px-3 file:py-1.5 file:font-bold file:text-[var(--brand-primary)]",
+          "transition-[border-color,box-shadow] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]",
+          "disabled:cursor-not-allowed disabled:opacity-60",
+          error ? "border-[var(--danger-border)]" : "hover:border-[var(--info-border)]",
           className
         )}
         aria-invalid={!!error}
@@ -32,9 +33,9 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
         {...props}
       />
       {helpId ? (
-        <div id={helpId} className={clsx("mt-1.5 text-sm", error ? "text-rose-700" : "text-muted")}>
+        <span id={helpId} className={clsx("mt-1.5 block text-sm", error ? "text-[var(--danger-fg)]" : "text-muted")}>
           {error ?? hint}
-        </div>
+        </span>
       ) : null}
     </label>
   );

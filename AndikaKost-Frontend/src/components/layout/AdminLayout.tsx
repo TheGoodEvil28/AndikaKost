@@ -4,20 +4,20 @@ import Sidebar from "./Sidebar";
 
 export default function AdminLayout() {
   const items = [
-    { to: "/admin/dashboard", label: "Dashboard" },
-    { to: "/admin/bookings", label: "Bookings" },
-    { to: "/admin/rooms", label: "Rooms" },
-    { to: "/admin/tenants", label: "Tenants" },
-    { to: "/admin/payments", label: "Payments" },
-    { to: "/admin/complaints", label: "Complaints" }
+    { to: "/admin/dashboard", label: "Dashboard", icon: "dashboard" as const, end: true },
+    { to: "/admin/bookings", label: "Bookings", icon: "bookings" as const },
+    { to: "/admin/rooms", label: "Rooms", icon: "rooms" as const },
+    { to: "/admin/tenants", label: "Tenants", icon: "tenants" as const },
+    { to: "/admin/payments", label: "Payments", icon: "payments" as const },
+    { to: "/admin/complaints", label: "Complaints", icon: "complaints" as const }
   ];
 
   return (
     <div className="app-page admin-surface min-h-screen">
       <Navbar title="Admin" />
-      <div className="mx-auto flex w-full max-w-7xl flex-col md:flex-row">
+      <div className="mx-auto flex w-full max-w-[92rem] flex-col lg:flex-row">
         <Sidebar items={items} />
-        <main className="flex-1 p-4 md:p-6">
+        <main className="min-w-0 flex-1 p-3.5 sm:p-5 lg:p-7">
           <Outlet />
         </main>
       </div>

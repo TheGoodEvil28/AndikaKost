@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
-import Modal from "../../components/ui/Modal";
 import BillForm from "../../components/forms/BillForm";
-import { Table, Td, Th } from "../../components/ui/Table";
 import Badge from "../../components/ui/Badge";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+import Icon from "../../components/ui/Icon";
+import Modal from "../../components/ui/Modal";
+import PageHeader from "../../components/ui/PageHeader";
+import StatePanel from "../../components/ui/StatePanel";
+import { Table, Td, Th } from "../../components/ui/Table";
+import { buttonClassName } from "../../components/ui/buttonStyles";
 import { usePaymentMutations, usePaymentsAdmin } from "../../hooks/usePayments";
-import { formatIdr, formatDate } from "../../utils/format";
+import { formatDate, formatIdr } from "../../utils/format";
 
 export default function PaymentsPage() {
   const payments = usePaymentsAdmin();
@@ -15,25 +19,36 @@ export default function PaymentsPage() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="grid gap-4">
-      <Card title="Payments">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-slate-600">Create bills and verify payment proofs.</div>
-          <Button onClick={() => setOpen(true)}>Create bill</Button>
-        </div>
-      </Card>
+    <div className="page-stack">
+      <PageHeader
+        eyebrow="Finance"
+        title="Payments"
+        description="Create monthly bills and review payment proof from tenants."
+        actions={
+          <Button onClick={() => setOpen(true)}>
+            <Icon name="plus" className="h-4 w-4" />
+            Create bill
+          </Button>
+        }
+      />
 
-      <Card title="Payment List">
+      <Card title="Payment ledger" description="Open a bill to review payment details and verification status.">
         {payments.isLoading ? (
-          <div>Loading…</div>
+          <StatePanel compact icon="payments" title="Loading payments..." />
         ) : payments.error ? (
-          <div className="text-rose-700">Failed to load payments.</div>
+          <StatePanel
+            compact
+            icon="payments"
+            tone="danger"
+            title="Payments could not be loaded"
+            description="Please try again in a moment."
+          />
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>ID</Th>
-                <Th>Tenant ID</Th>
+                <Th>Bill</Th>
+                <Th>Tenant</Th>
                 <Th>Month</Th>
                 <Th>Amount</Th>
                 <Th>Due</Th>
@@ -41,32 +56,45 @@ export default function PaymentsPage() {
               </tr>
             </thead>
             <tbody>
-              {payments.data?.map((p) => (
-                <tr key={p.id}>
-                  <Td>
-                    <Link className="font-semibold text-blue-700 hover:underline" to={`/admin/payments/${p.id}`}>
-                      {p.id}
+              {payments.data?.map((payment) => (
+                <tr key={payment.id}>
+                  <Td label="Bill">
+                    <Link
+                      className={buttonClassName({ variant: "ghost", className: "text-link -my-2 justify-start" })}
+                      to={`/admin/payments/${payment.id}`}
+                      aria-label={`Open bill ${payment.id}`}
+                    >
+                      #{payment.id}
+                      <Icon name="arrow-right" className="h-4 w-4" />
                     </Link>
                   </Td>
-                  <Td>{p.tenant_id}</Td>
-                  <Td>{p.billing_month}</Td>
-                  <Td>{formatIdr(p.amount_idr)}</Td>
-                  <Td>{formatDate(p.due_date)}</Td>
-                  <Td>
-                    <Badge>{p.status}</Badge>
+                  <Td label="Tenant">#{payment.tenant_id}</Td>
+                  <Td label="Month" className="font-semibold">
+                    {payment.billing_month}
+                  </Td>
+                  <Td label="Amount">{formatIdr(payment.amount_idr)}</Td>
+                  <Td label="Due">{formatDate(payment.due_date)}</Td>
+                  <Td label="Status">
+                    <Badge>{payment.status}</Badge>
                   </Td>
                 </tr>
               ))}
               {payments.data?.length === 0 ? (
                 <tr>
-                  <Td>
-                    <span className="text-slate-600">No payments yet.</span>
+                  <Td colSpan={6} className="p-3">
+                    <StatePanel
+                      compact
+                      icon="payments"
+                      title="No bills yet"
+                      description="Create the first bill to begin tracking tenant payments."
+                      action={
+                        <Button onClick={() => setOpen(true)}>
+                          <Icon name="plus" className="h-4 w-4" />
+                          Create bill
+                        </Button>
+                      }
+                    />
                   </Td>
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td />
                 </tr>
               ) : null}
             </tbody>
@@ -83,4 +111,3 @@ export default function PaymentsPage() {
     </div>
   );
 }
-

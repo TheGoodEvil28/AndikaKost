@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import Textarea from "../ui/Textarea";
 import type { Tenant } from "../../types";
 
 type Values = {
@@ -44,29 +45,40 @@ export default function TenantForm({
   });
 
   return (
-    <form className="grid gap-3" onSubmit={handleSubmit(onSubmit)}>
-      <Input label="Full name" {...register("full_name", { required: true })} />
-      {mode === "create" ? (
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-          <Input label="Email" type="email" {...register("email", { required: true })} />
-          <Input label="Password" type="password" {...register("password", { required: true })} />
+    <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className="grid min-w-0 gap-4">
+        <legend className="text-ui-base font-extrabold text-[var(--surface-fg)]">Tenant details</legend>
+        <p className="mt-1 text-sm text-muted">Record the tenant's contact and residency information.</p>
+        <Input label="Full name" {...register("full_name", { required: true })} />
+        {mode === "create" ? (
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Input label="Email" type="email" {...register("email", { required: true })} />
+            <Input label="Password" type="password" {...register("password", { required: true })} />
+          </div>
+        ) : null}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Input label="Phone" {...register("phone")} />
+          <Input label="Identity number" {...register("identity_number")} />
         </div>
-      ) : null}
-      <Input label="Phone" {...register("phone")} />
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         <Input label="Move-in date" type="date" {...register("move_in_date", { required: true })} />
-        <Input label="Identity number" {...register("identity_number")} />
+        <Textarea label="Address" rows={3} {...register("address")} />
+      </fieldset>
+
+      <fieldset className="grid min-w-0 gap-4 border-t border-[var(--surface-divider)] pt-5">
+        <legend className="text-ui-base font-extrabold text-[var(--surface-fg)]">Emergency contact</legend>
+        <p className="mt-1 text-sm text-muted">Add someone the property team can contact when urgent help is needed.</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Input label="Contact name" {...register("emergency_contact_name")} />
+          <Input label="Contact phone" {...register("emergency_contact_phone")} />
+        </div>
+        <Textarea label="Notes" rows={3} {...register("notes")} hint="Optional internal notes about this tenant." />
+      </fieldset>
+
+      <div className="flex border-t border-[var(--surface-divider)] pt-4">
+        <Button type="submit" loading={submitting} className="w-full sm:w-auto sm:min-w-40">
+          {submitting ? "Saving tenant..." : mode === "create" ? "Add tenant" : "Save changes"}
+        </Button>
       </div>
-      <Input label="Address" {...register("address")} />
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-        <Input label="Emergency contact name" {...register("emergency_contact_name")} />
-        <Input label="Emergency contact phone" {...register("emergency_contact_phone")} />
-      </div>
-      <Input label="Notes" {...register("notes")} />
-      <Button type="submit" disabled={submitting}>
-        Save
-      </Button>
     </form>
   );
 }
-

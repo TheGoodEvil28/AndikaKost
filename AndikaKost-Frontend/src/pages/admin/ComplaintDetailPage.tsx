@@ -1,8 +1,14 @@
 import { useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Card from "../../components/ui/Card";
+import { useParams } from "react-router-dom";
+import Badge from "../../components/ui/Badge";
 import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+import Icon from "../../components/ui/Icon";
+import PageHeader from "../../components/ui/PageHeader";
 import Select from "../../components/ui/Select";
+import StatePanel from "../../components/ui/StatePanel";
+import Textarea from "../../components/ui/Textarea";
+import { buttonClassName } from "../../components/ui/buttonStyles";
 import { useComplaint, useComplaintMutations } from "../../hooks/useComplaints";
 import { API_BASE_URL } from "../../utils/constants";
 
@@ -14,76 +20,107 @@ export default function ComplaintDetailPage() {
   const [response, setResponse] = useState("");
 
   return (
-    <div className="grid gap-4">
-      <Card title="Complaint Detail">
-        <div className="flex items-center justify-between">
-          <Link className="text-blue-700 hover:underline" to="/admin/complaints">
-            Back to complaints
-          </Link>
-        </div>
-      </Card>
+    <div className="page-stack">
+      <PageHeader
+        eyebrow="Resident care"
+        title={Number.isFinite(id) ? `Complaint #${id}` : "Complaint"}
+        description="Review the issue, communicate clearly, and keep the resolution status current."
+        backTo="/admin/complaints"
+        backLabel="Back to complaints"
+      />
 
       {complaint.isLoading ? (
-        <div>Loading…</div>
+        <StatePanel icon="complaints" title="Loading complaint..." />
       ) : complaint.error || !complaint.data ? (
-        <div className="text-rose-700">Complaint not found.</div>
+        <StatePanel
+          icon="complaints"
+          tone="danger"
+          title="Complaint not found"
+          description="The complaint may have been removed or the link may be incorrect."
+        />
       ) : (
-        <Card title={`Complaint #${complaint.data.id}`}>
-          <div className="grid gap-2 text-ui-base">
-            <div>
-              <span className="text-slate-600">Category: </span>
-              <b>{complaint.data.category}</b>
+        <>
+          <Card title="Complaint details" action={<Badge>{complaint.data.status}</Badge>}>
+            <div className="detail-grid">
+              <div className="detail-item">
+                <div className="detail-label">Tenant</div>
+                <div className="detail-value">#{complaint.data.tenant_id}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Room</div>
+                <div className="detail-value">#{complaint.data.room_id}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Category</div>
+                <div className="detail-value">{complaint.data.category}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Priority</div>
+                <div className="detail-value">
+                  <Badge>{complaint.data.priority}</Badge>
+                </div>
+              </div>
+              <div className="detail-item sm:col-span-2">
+                <div className="detail-label">Description</div>
+                <div className="detail-value whitespace-pre-wrap font-medium">{complaint.data.description}</div>
+              </div>
+              {complaint.data.admin_response ? (
+                <div className="detail-item sm:col-span-2">
+                  <div className="detail-label">Latest admin response</div>
+                  <div className="detail-value whitespace-pre-wrap font-medium">{complaint.data.admin_response}</div>
+                </div>
+              ) : null}
             </div>
-            <div>
-              <span className="text-slate-600">Priority: </span>
-              <b>{complaint.data.priority}</b>
-            </div>
-            <div>
-              <span className="text-slate-600">Status: </span>
-              <b>{complaint.data.status}</b>
-            </div>
-            <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
-              <div className="text-sm text-slate-600">Description</div>
-              <div className="whitespace-pre-wrap">{complaint.data.description}</div>
-            </div>
-            {complaint.data.photo_file_url ? (
-              <a className="font-semibold text-blue-700 hover:underline" href={`${API_BASE_URL}${complaint.data.photo_file_url}`} target="_blank" rel="noreferrer">
-                Open attached photo
-              </a>
-            ) : null}
-          </div>
 
-          <div className="mt-6 grid gap-3 md:grid-cols-2">
-            <Select
-              label="Update status"
-              value={complaint.data.status}
-              onChange={(e) => mut.updateStatus.mutate({ id, status: e.target.value })}
-            >
-              <option value="submitted">submitted</option>
-              <option value="reviewed">reviewed</option>
-              <option value="in_progress">in_progress</option>
-              <option value="resolved">resolved</option>
-              <option value="rejected">rejected</option>
-            </Select>
-            <label className="block">
-              <div className="mb-1.5 text-ui-base font-semibold text-[var(--surface-fg)]">Admin response</div>
-              <textarea
-                className="w-full rounded-xl border border-slate-300/80 bg-white/85 px-3.5 py-2.5 text-ui-base text-slate-900 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                rows={3}
+            {complaint.data.photo_file_url ? (
+              <div className="mt-4">
+                <a
+                  className={buttonClassName({ variant: "secondary" })}
+                  href={`${API_BASE_URL}${complaint.data.photo_file_url}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon name="upload" className="h-4 w-4" />
+                  Open attached photo
+                </a>
+              </div>
+            ) : null}
+          </Card>
+
+          <Card title="Resolution" description="Status changes and responses are saved to the tenant complaint record.">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Select
+                label="Update status"
+                value={complaint.data.status}
+                disabled={mut.updateStatus.isPending}
+                onChange={(event) => mut.updateStatus.mutate({ id, status: event.target.value })}
+              >
+                <option value="submitted">submitted</option>
+                <option value="reviewed">reviewed</option>
+                <option value="in_progress">in_progress</option>
+                <option value="resolved">resolved</option>
+                <option value="rejected">rejected</option>
+              </Select>
+              <Textarea
+                label="Admin response"
+                rows={4}
                 value={response}
-                onChange={(e) => setResponse(e.target.value)}
-                placeholder="Write a clear, friendly response…"
+                onChange={(event) => setResponse(event.target.value)}
+                placeholder="Write a clear, friendly response..."
               />
-            </label>
-            <div className="md:col-span-2">
-              <Button onClick={() => mut.respond.mutate({ id, response })} disabled={!response.trim() || mut.respond.isPending}>
-                Save response
-              </Button>
+              <div className="md:col-span-2">
+                <Button
+                  loading={mut.respond.isPending}
+                  onClick={() => mut.respond.mutate({ id, response })}
+                  disabled={!response.trim()}
+                >
+                  Save response
+                </Button>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </>
       )}
     </div>
   );
 }
-

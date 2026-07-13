@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
-import Modal from "../../components/ui/Modal";
 import TenantForm from "../../components/forms/TenantForm";
-import { Table, Td, Th } from "../../components/ui/Table";
 import Badge from "../../components/ui/Badge";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+import Icon from "../../components/ui/Icon";
+import Modal from "../../components/ui/Modal";
+import PageHeader from "../../components/ui/PageHeader";
+import StatePanel from "../../components/ui/StatePanel";
+import { Table, Td, Th } from "../../components/ui/Table";
+import { buttonClassName } from "../../components/ui/buttonStyles";
 import { useTenantMutations, useTenants } from "../../hooks/useTenants";
 
 export default function TenantsPage() {
@@ -14,19 +18,30 @@ export default function TenantsPage() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="grid gap-4">
-      <Card title="Tenants">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="text-slate-600">Create tenant accounts and manage assignments.</div>
-          <Button onClick={() => setOpen(true)}>Add tenant</Button>
-        </div>
-      </Card>
+    <div className="page-stack">
+      <PageHeader
+        eyebrow="Residents"
+        title="Tenants"
+        description="Create tenant accounts, review resident details, and manage room assignments."
+        actions={
+          <Button onClick={() => setOpen(true)}>
+            <Icon name="plus" className="h-4 w-4" />
+            Add tenant
+          </Button>
+        }
+      />
 
-      <Card title="Tenant List">
+      <Card title="Tenant directory" description="Open a tenant profile to update contact details or room assignment.">
         {tenants.isLoading ? (
-          <div>Loading…</div>
+          <StatePanel compact icon="tenants" title="Loading tenants..." />
         ) : tenants.error ? (
-          <div className="text-rose-700">Failed to load tenants.</div>
+          <StatePanel
+            compact
+            icon="tenants"
+            tone="danger"
+            title="Tenants could not be loaded"
+            description="Please try again in a moment."
+          />
         ) : (
           <Table>
             <thead>
@@ -39,30 +54,44 @@ export default function TenantsPage() {
               </tr>
             </thead>
             <tbody>
-              {tenants.data?.map((t) => (
-                <tr key={t.id}>
-                  <Td>{t.id}</Td>
-                  <Td>
-                    <Link className="font-semibold text-blue-700 hover:underline" to={`/admin/tenants/${t.id}`}>
-                      {t.full_name}
+              {tenants.data?.map((tenant) => (
+                <tr key={tenant.id}>
+                  <Td label="ID">#{tenant.id}</Td>
+                  <Td label="Name">
+                    <Link
+                      className={buttonClassName({ variant: "ghost", className: "text-link -my-2 justify-start" })}
+                      to={`/admin/tenants/${tenant.id}`}
+                      aria-label={`Open tenant ${tenant.full_name}`}
+                    >
+                      {tenant.full_name}
+                      <Icon name="arrow-right" className="h-4 w-4" />
                     </Link>
                   </Td>
-                  <Td>{t.email}</Td>
-                  <Td>{t.room_id ?? "-"}</Td>
-                  <Td>
-                    <Badge>{t.status}</Badge>
+                  <Td label="Email" className="break-all">
+                    {tenant.email}
+                  </Td>
+                  <Td label="Room">{tenant.room_id ? `#${tenant.room_id}` : "Unassigned"}</Td>
+                  <Td label="Status">
+                    <Badge>{tenant.status}</Badge>
                   </Td>
                 </tr>
               ))}
               {tenants.data?.length === 0 ? (
                 <tr>
-                  <Td>
-                    <span className="text-slate-600">No tenants yet.</span>
+                  <Td colSpan={5} className="p-3">
+                    <StatePanel
+                      compact
+                      icon="tenants"
+                      title="No tenants yet"
+                      description="Add the first tenant to begin managing resident accounts."
+                      action={
+                        <Button onClick={() => setOpen(true)}>
+                          <Icon name="plus" className="h-4 w-4" />
+                          Add tenant
+                        </Button>
+                      }
+                    />
                   </Td>
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td />
                 </tr>
               ) : null}
             </tbody>
@@ -89,4 +118,3 @@ export default function TenantsPage() {
     </div>
   );
 }
-

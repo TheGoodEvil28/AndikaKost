@@ -1,17 +1,49 @@
-import type { ReactNode } from "react";
+import type { ReactNode, TableHTMLAttributes, TdHTMLAttributes, ThHTMLAttributes } from "react";
+import clsx from "clsx";
 
-export function Table({ children }: { children: ReactNode }) {
+export function Table({
+  children,
+  className,
+  containerClassName,
+  ...props
+}: TableHTMLAttributes<HTMLTableElement> & { children: ReactNode; containerClassName?: string }) {
   return (
-    <div className="theme-surface overflow-auto rounded-2xl border">
-      <table className="min-w-full text-left text-ui-base">{children}</table>
+    <div className={clsx("responsive-table theme-surface overflow-x-auto rounded-2xl border", containerClassName)}>
+      <table className={clsx("min-w-full text-left text-ui-base", className)} {...props}>
+        {children}
+      </table>
     </div>
   );
 }
 
-export function Th({ children }: { children?: ReactNode }) {
-  return <th className="whitespace-nowrap border-b border-slate-200 bg-white/65 px-4 py-4 font-semibold text-slate-700">{children}</th>;
+export function Th({ children, className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) {
+  return (
+    <th
+      className={clsx(
+        "whitespace-nowrap border-b border-[var(--surface-divider)] bg-[var(--surface-subtle)] px-4 py-3.5 text-xs font-extrabold uppercase tracking-[0.055em] text-[var(--muted-strong)]",
+        className
+      )}
+      scope="col"
+      {...props}
+    >
+      {children}
+    </th>
+  );
 }
 
-export function Td({ children }: { children?: ReactNode }) {
-  return <td className="border-b border-slate-100/90 px-4 py-4 align-top">{children}</td>;
+export function Td({
+  children,
+  className,
+  label,
+  ...props
+}: TdHTMLAttributes<HTMLTableCellElement> & { label?: string }) {
+  return (
+    <td
+      className={clsx("border-b border-[var(--surface-divider)] px-4 py-4 align-middle text-[var(--surface-fg)]", className)}
+      data-label={label}
+      {...props}
+    >
+      {children}
+    </td>
+  );
 }

@@ -1,28 +1,40 @@
 import { Link } from "react-router-dom";
-import Card from "../../components/ui/Card";
 import Badge from "../../components/ui/Badge";
+import Card from "../../components/ui/Card";
+import Icon from "../../components/ui/Icon";
+import PageHeader from "../../components/ui/PageHeader";
+import StatePanel from "../../components/ui/StatePanel";
 import { Table, Td, Th } from "../../components/ui/Table";
+import { buttonClassName } from "../../components/ui/buttonStyles";
 import { useBookings } from "../../hooks/useBookings";
 
 export default function BookingsPage() {
   const bookings = useBookings();
 
   return (
-    <div className="grid gap-4">
-      <Card title="Booking Requests">
-        <div className="text-slate-600">Requests submitted from the public rooms page.</div>
-      </Card>
+    <div className="page-stack">
+      <PageHeader
+        eyebrow="Leasing"
+        title="Booking requests"
+        description="Review requests submitted from the public room listings and keep each applicant moving."
+      />
 
-      <Card title="List">
+      <Card title="All requests" description="Open a request to review contact details and update its status.">
         {bookings.isLoading ? (
-          <div>Loading…</div>
+          <StatePanel compact icon="bookings" title="Loading booking requests..." />
         ) : bookings.error ? (
-          <div className="text-rose-700">Failed to load booking requests.</div>
+          <StatePanel
+            compact
+            icon="bookings"
+            tone="danger"
+            title="Booking requests could not be loaded"
+            description="Please try again in a moment."
+          />
         ) : (
           <Table>
             <thead>
               <tr>
-                <Th>ID</Th>
+                <Th>Request</Th>
                 <Th>Room</Th>
                 <Th>Name</Th>
                 <Th>Email</Th>
@@ -30,30 +42,40 @@ export default function BookingsPage() {
               </tr>
             </thead>
             <tbody>
-              {bookings.data?.map((b) => (
-                <tr key={b.id}>
-                  <Td>
-                    <Link className="font-semibold text-blue-700 hover:underline" to={`/admin/bookings/${b.id}`}>
-                      {b.id}
+              {bookings.data?.map((booking) => (
+                <tr key={booking.id}>
+                  <Td label="Request">
+                    <Link
+                      className={buttonClassName({ variant: "ghost", className: "text-link -my-2 justify-start" })}
+                      to={`/admin/bookings/${booking.id}`}
+                      aria-label={`Open booking request ${booking.id}`}
+                    >
+                      #{booking.id}
+                      <Icon name="arrow-right" className="h-4 w-4" />
                     </Link>
                   </Td>
-                  <Td>{b.room_id}</Td>
-                  <Td>{b.full_name}</Td>
-                  <Td>{b.email}</Td>
-                  <Td>
-                    <Badge>{b.status}</Badge>
+                  <Td label="Room">#{booking.room_id}</Td>
+                  <Td label="Name" className="font-semibold">
+                    {booking.full_name}
+                  </Td>
+                  <Td label="Email" className="break-all">
+                    {booking.email}
+                  </Td>
+                  <Td label="Status">
+                    <Badge>{booking.status}</Badge>
                   </Td>
                 </tr>
               ))}
               {bookings.data?.length === 0 ? (
                 <tr>
-                  <Td>
-                    <span className="text-slate-600">No booking requests yet.</span>
+                  <Td colSpan={5} className="p-3">
+                    <StatePanel
+                      compact
+                      icon="bookings"
+                      title="No booking requests yet"
+                      description="New requests from the public room listings will appear here."
+                    />
                   </Td>
-                  <Td />
-                  <Td />
-                  <Td />
-                  <Td />
                 </tr>
               ) : null}
             </tbody>
@@ -63,4 +85,3 @@ export default function BookingsPage() {
     </div>
   );
 }
-

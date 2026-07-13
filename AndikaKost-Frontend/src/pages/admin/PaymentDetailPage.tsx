@@ -1,12 +1,16 @@
 import { useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import Card from "../../components/ui/Card";
-import Button from "../../components/ui/Button";
-import Input from "../../components/ui/Input";
+import { useParams } from "react-router-dom";
 import Badge from "../../components/ui/Badge";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+import Icon from "../../components/ui/Icon";
+import Input from "../../components/ui/Input";
+import PageHeader from "../../components/ui/PageHeader";
+import StatePanel from "../../components/ui/StatePanel";
+import { buttonClassName } from "../../components/ui/buttonStyles";
 import { usePayment, usePaymentMutations } from "../../hooks/usePayments";
 import { API_BASE_URL } from "../../utils/constants";
-import { formatIdr, formatDate } from "../../utils/format";
+import { formatDate, formatIdr } from "../../utils/format";
 
 export default function PaymentDetailPage() {
   const params = useParams();
@@ -16,74 +20,103 @@ export default function PaymentDetailPage() {
   const [note, setNote] = useState("");
 
   return (
-    <div className="grid gap-4">
-      <Card title="Payment Detail">
-        <div className="flex items-center justify-between">
-          <Link className="text-blue-700 hover:underline" to="/admin/payments">
-            Back to payments
-          </Link>
-        </div>
-      </Card>
+    <div className="page-stack">
+      <PageHeader
+        eyebrow="Finance"
+        title={Number.isFinite(id) ? `Bill #${id}` : "Payment detail"}
+        description="Review billing information and verify any payment proof submitted by the tenant."
+        backTo="/admin/payments"
+        backLabel="Back to payments"
+      />
 
       {payment.isLoading ? (
-        <div>Loading…</div>
+        <StatePanel icon="payments" title="Loading payment..." />
       ) : payment.error || !payment.data ? (
-        <div className="text-rose-700">Payment not found.</div>
+        <StatePanel
+          icon="payments"
+          tone="danger"
+          title="Payment not found"
+          description="The bill may have been removed or the link may be incorrect."
+        />
       ) : (
-        <Card title={`Bill #${payment.data.id}`}>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <div>
-              <div className="text-sm text-slate-600">Tenant ID</div>
-              <div className="font-semibold">{payment.data.tenant_id}</div>
-            </div>
-            <div>
-              <div className="text-sm text-slate-600">Room ID</div>
-              <div className="font-semibold">{payment.data.room_id}</div>
-            </div>
-            <div>
-              <div className="text-sm text-slate-600">Billing month</div>
-              <div className="font-semibold">{payment.data.billing_month}</div>
-            </div>
-            <div>
-              <div className="text-sm text-slate-600">Amount</div>
-              <div className="font-semibold">{formatIdr(payment.data.amount_idr)}</div>
-            </div>
-            <div>
-              <div className="text-sm text-slate-600">Due date</div>
-              <div className="font-semibold">{formatDate(payment.data.due_date)}</div>
-            </div>
-            <div>
-              <div className="text-sm text-slate-600">Status</div>
-              <div className="font-semibold">
-                <Badge>{payment.data.status}</Badge>
+        <>
+          <Card title="Billing details" action={<Badge>{payment.data.status}</Badge>}>
+            <div className="detail-grid">
+              <div className="detail-item">
+                <div className="detail-label">Tenant</div>
+                <div className="detail-value">#{payment.data.tenant_id}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Room</div>
+                <div className="detail-value">#{payment.data.room_id}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Billing month</div>
+                <div className="detail-value">{payment.data.billing_month}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Amount</div>
+                <div className="detail-value">{formatIdr(payment.data.amount_idr)}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Due date</div>
+                <div className="detail-value">{formatDate(payment.data.due_date)}</div>
+              </div>
+              <div className="detail-item">
+                <div className="detail-label">Status</div>
+                <div className="detail-value">
+                  <Badge>{payment.data.status}</Badge>
+                </div>
+              </div>
+              <div className="detail-item sm:col-span-2">
+                <div className="detail-label">Payment proof</div>
+                <div className="detail-value">
+                  {payment.data.proof_file_url ? (
+                    <a
+                      className={buttonClassName({ variant: "secondary", className: "mt-1" })}
+                      href={`${API_BASE_URL}${payment.data.proof_file_url}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Icon name="upload" className="h-4 w-4" />
+                      Open uploaded proof
+                    </a>
+                  ) : (
+                    <span className="text-muted">No proof uploaded.</span>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="md:col-span-2">
-              <div className="text-sm text-slate-600">Proof</div>
-              {payment.data.proof_file_url ? (
-                <a className="font-semibold text-blue-700 hover:underline" href={`${API_BASE_URL}${payment.data.proof_file_url}`} target="_blank" rel="noreferrer">
-                  Open uploaded proof
-                </a>
-              ) : (
-                <div className="font-semibold">No proof uploaded.</div>
-              )}
-            </div>
-          </div>
+          </Card>
 
-          <div className="mt-6 grid gap-3 md:grid-cols-2">
-            <Input label="Admin note (optional, for rejection)" value={note} onChange={(e) => setNote(e.target.value)} />
-            <div className="flex flex-wrap gap-2 md:items-end">
-              <Button onClick={() => mut.approve.mutate(id)} disabled={mut.approve.isPending}>
-                Approve
-              </Button>
-              <Button variant="danger" onClick={() => mut.reject.mutate({ id, note })} disabled={mut.reject.isPending}>
-                Reject
-              </Button>
+          <Card
+            title="Payment review"
+            description="Approve valid proof or add a clear note before rejecting the submission."
+          >
+            <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+              <Input
+                label="Admin note (optional, for rejection)"
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+              />
+              <div className="flex flex-wrap gap-2">
+                <Button loading={mut.approve.isPending} onClick={() => mut.approve.mutate(id)}>
+                  <Icon name="check" className="h-4 w-4" />
+                  Approve
+                </Button>
+                <Button
+                  variant="danger"
+                  loading={mut.reject.isPending}
+                  onClick={() => mut.reject.mutate({ id, note })}
+                >
+                  <Icon name="x" className="h-4 w-4" />
+                  Reject
+                </Button>
+              </div>
             </div>
-          </div>
-        </Card>
+          </Card>
+        </>
       )}
     </div>
   );
 }
-

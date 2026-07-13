@@ -1,38 +1,36 @@
 import { forwardRef } from "react";
-import type { SelectHTMLAttributes } from "react";
+import type { TextareaHTMLAttributes } from "react";
 import clsx from "clsx";
 
-type Props = SelectHTMLAttributes<HTMLSelectElement> & {
+type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label?: string;
   hint?: string;
   error?: string;
 };
 
-const Select = forwardRef<HTMLSelectElement, Props>(function Select(
-  { className, label, hint, error, id, children, ...props },
+const Textarea = forwardRef<HTMLTextAreaElement, Props>(function Textarea(
+  { className, label, hint, error, id, ...props },
   ref
 ) {
-  const selectId = id ?? props.name ?? undefined;
-  const helpId = selectId && (hint || error) ? `${selectId}-help` : undefined;
+  const textareaId = id ?? props.name ?? undefined;
+  const helpId = textareaId && (hint || error) ? `${textareaId}-help` : undefined;
+
   return (
     <label className="block">
       {label ? <span className="mb-1.5 block text-ui-base font-bold text-[var(--surface-fg)]">{label}</span> : null}
-      <select
-        id={selectId}
+      <textarea
+        id={textareaId}
         ref={ref}
         className={clsx(
-          "control-surface min-h-11 w-full rounded-xl border px-3.5 py-2.5 text-ui-base",
+          "control-surface min-h-28 w-full rounded-xl border px-3.5 py-3 text-ui-base placeholder:text-[var(--muted-fg)]",
           "transition-[border-color,box-shadow] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]",
-          "disabled:cursor-not-allowed disabled:opacity-60",
           error ? "border-[var(--danger-border)]" : "hover:border-[var(--info-border)]",
           className
         )}
         aria-invalid={!!error}
         aria-describedby={helpId}
         {...props}
-      >
-        {children}
-      </select>
+      />
       {helpId ? (
         <span id={helpId} className={clsx("mt-1.5 block text-sm", error ? "text-[var(--danger-fg)]" : "text-muted")}>
           {error ?? hint}
@@ -42,4 +40,4 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
   );
 });
 
-export default Select;
+export default Textarea;

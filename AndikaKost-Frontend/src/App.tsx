@@ -39,6 +39,7 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="bookings" element={<BookingsPage />} />
           <Route path="bookings/:id" element={<BookingDetailPage />} />
@@ -60,6 +61,7 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<TenantDashboardPage />} />
           <Route path="room" element={<MyRoomPage />} />
           <Route path="bills" element={<MyBillsPage />} />

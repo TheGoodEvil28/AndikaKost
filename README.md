@@ -105,3 +105,4 @@ See `docs/PROJECT_STATUS.md`.
 ## UI Documentation
 
 - UI overhaul (responsive + admin accessibility + sleek public): `docs/UI_OVERHAUL_RESPONSIVE_A11Y.md`
+- Penpot MCP setup and design-sync contract: `docs/PENPOT_MCP_DESIGN_SYNC.md`
