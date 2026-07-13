@@ -73,7 +73,7 @@ export default function TenantDashboardPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="metric-label">Assigned room</div>
               <span className="brand-chip grid h-9 w-9 shrink-0 place-items-center rounded-xl">
-                <Icon name="rooms" className="h-4.5 w-4.5" />
+                <Icon name="rooms" className="h-5 w-5" />
               </span>
             </div>
             <div className="metric-value">
@@ -92,7 +92,7 @@ export default function TenantDashboardPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="metric-label">Current bill</div>
               <span className="brand-chip grid h-9 w-9 shrink-0 place-items-center rounded-xl">
-                <Icon name="payments" className="h-4.5 w-4.5" />
+                <Icon name="payments" className="h-5 w-5" />
               </span>
             </div>
             <div className="metric-value">
@@ -116,7 +116,7 @@ export default function TenantDashboardPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="metric-label">Latest complaint</div>
               <span className="brand-chip grid h-9 w-9 shrink-0 place-items-center rounded-xl">
-                <Icon name="complaints" className="h-4.5 w-4.5" />
+                <Icon name="complaints" className="h-5 w-5" />
               </span>
             </div>
             <div className="metric-value">
@@ -141,11 +141,11 @@ export default function TenantDashboardPage() {
       <Card title="Quick actions" description="Complete common tenant tasks without searching through the menu.">
         <div className="grid gap-2 sm:grid-cols-2 lg:max-w-2xl">
           <Link className={buttonClassName({ variant: "secondary", className: "w-full sm:justify-start" })} to="/tenant/bills">
-            <Icon name="upload" className="h-4.5 w-4.5" />
+            <Icon name="upload" className="h-5 w-5" />
             Upload payment proof
           </Link>
           <Link className={buttonClassName({ className: "w-full sm:justify-start" })} to="/tenant/complaints/new">
-            <Icon name="plus" className="h-4.5 w-4.5" />
+            <Icon name="plus" className="h-5 w-5" />
             Submit a complaint
           </Link>
         </div>

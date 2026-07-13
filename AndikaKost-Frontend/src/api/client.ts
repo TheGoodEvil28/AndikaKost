@@ -13,3 +13,19 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error: unknown) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      const requestUrl = error.config?.url ?? "";
+      const isLoginRequest = requestUrl.endsWith("/auth/login");
+
+      if (!isLoginRequest) {
+        const auth = useAuthStore.getState();
+        if (auth.token || auth.me) auth.logout();
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);

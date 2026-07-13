@@ -92,7 +92,7 @@ export default function MyRoomPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="metric-label">Room number</div>
               <span className="brand-chip grid h-9 w-9 shrink-0 place-items-center rounded-xl">
-                <Icon name="rooms" className="h-4.5 w-4.5" />
+                <Icon name="rooms" className="h-5 w-5" />
               </span>
             </div>
             <div className="metric-value">{data.room_number}</div>
@@ -102,7 +102,7 @@ export default function MyRoomPage() {
             <div className="flex items-start justify-between gap-3">
               <div className="metric-label">Monthly rent</div>
               <span className="brand-chip grid h-9 w-9 shrink-0 place-items-center rounded-xl">
-                <Icon name="wallet" className="h-4.5 w-4.5" />
+                <Icon name="wallet" className="h-5 w-5" />
               </span>
             </div>
             <div className="metric-value">{formatIdr(data.price_idr)}</div>

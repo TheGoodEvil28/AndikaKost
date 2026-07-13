@@ -23,7 +23,7 @@ export default function Sidebar({ items, label = "Main navigation" }: { items: S
       <div className="flex gap-1.5 overflow-x-auto pb-0.5 lg:grid lg:gap-1.5 lg:overflow-visible lg:pb-0">
         {items.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.end} className={linkClass}>
-            <Icon name={item.icon} className="h-4.5 w-4.5 shrink-0" />
+            <Icon name={item.icon} className="h-5 w-5 shrink-0" />
             <span>{item.label}</span>
           </NavLink>
         ))}
