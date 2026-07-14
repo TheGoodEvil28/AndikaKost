@@ -66,7 +66,13 @@ jobs:
         run: npm run build
 
       - name: Validate deployment compose config
-        run: docker compose config --quiet
+        run: |
+          if [ ! -f AndikaKost-Backend/.env ]; then
+            cp AndikaKost-Backend/.env.example AndikaKost-Backend/.env
+            CREATED_CI_ENV=1
+          fi
+          trap 'if [ "${CREATED_CI_ENV:-0}" = "1" ]; then rm -f AndikaKost-Backend/.env; fi' EXIT
+          docker compose config --quiet
 
   deploy:
     name: Deploy To Server
