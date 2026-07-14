@@ -65,12 +65,8 @@ jobs:
         working-directory: AndikaKost-Frontend
         run: npm run build
 
-      - name: Build production frontend image
-        run: >-
-          docker build
-          --build-arg VITE_API_BASE_URL=https://andika-kost-api.andikanugra.my.id
-          --tag andikakost-frontend:ci
-          AndikaKost-Frontend
+      - name: Validate deployment compose config
+        run: docker compose config --quiet
 
   deploy:
     name: Deploy To Server

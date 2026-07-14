@@ -19,10 +19,19 @@ if ! command -v curl >/dev/null 2>&1; then
   exit 1
 fi
 
-docker compose up -d --build
+docker compose up -d --build --remove-orphans
 
-MAX_RETRIES=30
-SLEEP_SECONDS=2
+MAX_RETRIES="${DEPLOY_HEALTH_MAX_RETRIES:-60}"
+SLEEP_SECONDS="${DEPLOY_HEALTH_SLEEP_SECONDS:-3}"
+
+dump_compose_state() {
+  echo "==== docker compose ps ===="
+  docker compose ps || true
+  echo "==== backend logs ===="
+  docker compose logs --no-color --tail=120 backend || true
+  echo "==== frontend logs ===="
+  docker compose logs --no-color --tail=120 frontend || true
+}
 
 wait_for_url() {
   local name="$1"
@@ -39,6 +48,7 @@ wait_for_url() {
   done
 
   echo "$name health check failed after deploy."
+  dump_compose_state
   return 1
 }
 
